@@ -10,24 +10,19 @@ Vered Shwartz, Omer Levy, Ido Dagan and Jacob Goldberger. CoNLL 2015.
 - Python 2.7 (with numpy and scipy)
 
 ## Usage Instructions ##
-1. Clone the repository or download the scripts.
+# Clone the repository or download the scripts.
 
-2. Search for paths between (x,y) terms in the datasets:
-
-```python search.py [dataset_path] [resource_matrix_path] [resource_entities_path] [resource_properties_path] [resource_l2r_path] [max_path_length] [allow_reversed_edges] [find_relevant_nodes (or use an existing nodes file)] [relevant_nodes_file] [paths_out_file]```
-
+# Search for paths between (x,y) terms in the datasets:
+<tt>python search.py [dataset_path] [resource_matrix_path] [resource_entities_path] [resource_properties_path] [resource_l2r_path] [max_path_length] [allow_reversed_edges] [find_relevant_nodes (or use an existing nodes file)] [relevant_nodes_file] [paths_out_file]</tt>
 For instance:
+<tt>python search.py data/train_label /resource/wordnetMatrix.mm.tmp.npz /resource/wordnetEntities.txt /resource/wordnetProperties.txt /resource/wordnet-l2r.txt 1 True True data/nodes.txt data/train_path</tt>
 
-```python search.py data/train_label /resource/wordnetMatrix.mm.tmp.npz /resource/wordnetEntities.txt /resource/wordnetProperties.txt /resource/wordnet-l2r.txt 1 True True data/nodes.txt data/train_path;```
-
-3. Train the model (binary / weighted) with the following command:
-
-```python -u eval_hard.py (eval_soft.py) [dataset] [eval_dir]```
-
+# Train the model (binary / weighted) with the following command:
+<tt>python -u eval_hard.py (eval_soft.py) [dataset] [eval_dir]</tt>
 The eval_dir is the directory for the current evaluation. This directory should include a subdirectory called [dataset] that contains the train, test and validation sets. After evaluation, this directory will contain the path files, and the whitelists (in the binary model). This command evaluates the algorithm on this dataset using several Beta values and prints the performance results.
 
 ## Resources ##
 Due to space limitations, only the WordNet resource is available in the repository. In order to use the other resources, download the resource dump files and create a triplets file in which every line is in the following format:
-```[left_object] [right_object] [property]```
+<tt>[left_object] [right_object] [property]</tt>
 Use the script "create_resource.py" to create the resource files.
 Using large resources requires sufficient memory.
