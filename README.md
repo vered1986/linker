@@ -3,7 +3,7 @@
 <b>linker</b> is an open source supervised framework for utilizing structured knowledge resources to recognize lexical inference.
 If you use linker for any published research, please include the following citation:
 
-<b>"Learning to Exploit Structured Resources for Lexical Inference"<b><br/>
+<b>"Learning to Exploit Structured Resources for Lexical Inference"</b><br/>
 Vered Shwartz, Omer Levy, Ido Dagan and Jacob Goldberger. CoNLL 2015.
 
 ## Requirements ##
@@ -24,7 +24,8 @@ python search.py data/train_label /resource/wordnetMatrix.mm.tmp.npz /resource/w
 - Train the model (binary / weighted) with the following command:
 ```
 python -u eval_hard.py (eval_soft.py) [dataset] [eval_dir]
-``` The eval_dir is the directory for the current evaluation. This directory should include a subdirectory called [dataset] that contains the train, test and validation sets. After evaluation, this directory will contain the path files, and the whitelists (in the binary model). This command evaluates the algorithm on this dataset using several Beta values and prints the performance results.
+``` 
+The eval_dir is the directory for the current evaluation. This directory should include a subdirectory called [dataset] that contains the train, test and validation sets. After evaluation, this directory will contain the path files, and the whitelists (in the binary model). This command evaluates the algorithm on this dataset using several Beta values and prints the performance results.
 
 ## Resources ##
 Due to space limitations, only the WordNet resource is available in the repository. In order to use the other resources, download the resource dump files and create a triplets file in which every line is in the following format:
