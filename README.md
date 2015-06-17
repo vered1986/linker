@@ -1,7 +1,7 @@
 # linker: Lexical INference using KnowledgE Resources
 
 <b>linker</b> is an open source supervised framework for utilizing structured knowledge resources to recognize lexical inference.
-If you use linker for any published research, please include the following citation:
+If you use <b>linker</b> for any published research, please include the following citation:
 
 <b>"Learning to Exploit Structured Resources for Lexical Inference"</b><br/>
 Vered Shwartz, Omer Levy, Ido Dagan and Jacob Goldberger. CoNLL 2015.
@@ -32,5 +32,5 @@ Due to space limitations, only the WordNet resource is available in the reposito
 ```
 [left_object] [right_object] [property]
 ```
-Use the script "create_resource.py" to create the resource files.
+Use the script "create_resource.py" to create the resource files.<br/>
 Using large resources requires sufficient memory.
