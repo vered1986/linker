@@ -1,9 +1,9 @@
 # linker: Lexical INference using KnowledgE Resources
 
-linker is an open source supervised framework for utilizing structured knowledge resources to recognize lexical inference.
+<b>linker</b> is an open source supervised framework for utilizing structured knowledge resources to recognize lexical inference.
 If you use linker for any published research, please include the following citation:
 
-"Learning to Exploit Structured Resources for Lexical Inference"
+<b>"Learning to Exploit Structured Resources for Lexical Inference"<b><br/>
 Vered Shwartz, Omer Levy, Ido Dagan and Jacob Goldberger. CoNLL 2015.
 
 ## Requirements ##
@@ -15,7 +15,8 @@ Vered Shwartz, Omer Levy, Ido Dagan and Jacob Goldberger. CoNLL 2015.
 - Search for paths between (x,y) terms in the datasets:
 ```
 python search.py [dataset_path] [resource_matrix_path] [resource_entities_path] [resource_properties_path] [resource_l2r_path] [max_path_length] [allow_reversed_edges] [find_relevant_nodes (or use an existing nodes file)] [relevant_nodes_file] [paths_out_file]
-``` For instance:
+``` 
+For instance:
 ```
 python search.py data/train_label /resource/wordnetMatrix.mm.tmp.npz /resource/wordnetEntities.txt /resource/wordnetProperties.txt /resource/wordnet-l2r.txt 1 True True data/nodes.txt data/train_path
 ```
