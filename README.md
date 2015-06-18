@@ -1,7 +1,7 @@
-# linker: Lexical INference using KnowledgE Resources
+# LinKeR: Lexical INference using KnowledgE Resources
 
-<b>linker</b> is an open source supervised framework for utilizing structured knowledge resources to recognize lexical inference.
-If you use <b>linker</b> for any published research, please include the following citation:
+<b>LinKeR</b> is an open source supervised framework for utilizing structured knowledge resources to recognize lexical inference.
+If you use <b>LinKeR</b> for any published research, please include the following citation:
 
 <b>"Learning to Exploit Structured Resources for Lexical Inference"</b><br/>
 Vered Shwartz, Omer Levy, Ido Dagan and Jacob Goldberger. CoNLL 2015.
@@ -28,9 +28,16 @@ python -u eval_hard.py (eval_soft.py) [dataset] [eval_dir]
 The eval_dir is the directory for the current evaluation. This directory should include a subdirectory called [dataset] that contains the train, test and validation sets. After evaluation, this directory will contain the path files, and the whitelists (in the binary model). This command evaluates the algorithm on this dataset using several Beta values and prints the performance results.
 
 ## Resources ##
-Due to space limitations, only the WordNet resource is available in the repository. In order to use the other resources, download the resource dump files and create a triplets file in which every line is in the following format:
+Due to space limitations, only the WordNet resource is available in the repository. 
+In order to use the other resources: 
+
+- Download the resource dump files. We used [Wikidata](http://tools.wmflabs.org/wikidata-exports/rdf/), [DBPedia](http://wiki.dbpedia.org/Downloads) and [Yago](https://www.mpi-inf.mpg.de/departments/databases-and-information-systems/research/yago-naga/yago/downloads/), but you can use any other structured resource.
+
+- Create a triplets file in which every line is in the following format:
 ```
 [left_object] [right_object] [property]
 ```
-Use the script "create_resource.py" to create the resource files.<br/>
+
+- Use the script "create_resource.py" to create the resource files.
+
 Using large resources requires sufficient memory.
