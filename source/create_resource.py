@@ -1,25 +1,25 @@
 ﻿import sys
 from collections import Counter
 from matrix_serializer import save_matrix, read_mm_matrix
+from common_data import load_data, load_whitelist
+from docopt import docopt
 
-triplets_file = sys.argv[1]
-out_prefix = sys.argv[2]
+args = docopt("""Creates the resource files from a triplets file.
 
-if len(sys.argv) > 3:
-    prop_min_occ = int(sys.argv[3])
-else:
-    prop_min_occ = 0
+    Usage:
+        create_resource.py <triplets_file> <out_prefix>
+
+        <out_prefix> = the directory and prefix for the resource files
+        (e.g. /home/user/resources/res1).
+    """)
+
+triplets_file = args['<triplets_file>']
+out_prefix = args['<out_prefix>']
 
 with open(triplets_file) as input:
         dataset = set((tuple(line.strip().split('\t')) for line in input))
-        prop_count = Counter((statement[2] for statement in dataset))
+        properties = set((statement[2] for statement in dataset))
 
-# Get top prop_cutoff properties
-properties = sorted(prop_count.items(), key=lambda t: t[1], reverse=True)
-
-properties = [prop for prop in properties if prop[1] >= prop_min_occ]
-
-properties = set(zip(*properties)[0])
 prop_id_to_label = sorted(properties)
 prop_label_to_id = dict(((p, i) for i, p in enumerate(prop_id_to_label)))
 

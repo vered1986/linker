@@ -6,22 +6,30 @@ import numpy as np
 from aprf import calc_aprf
 from soft_path_validator import SoftPathValidator
 from common_data import load_data
+from docopt import docopt
 
 
 def main():
     """
     Reads the paths files and the datasets, trains the weighted edge model
     and evaluates it.
-
-    :param sys.argv[1] -- the dataset file
-    :param sys.argv[2] -- the directory of the paths and labels files
     """
+
+    args = docopt("""Trains and evaluates the weighted model using several Beta values and prints the performance results.
+
+    Usage:
+        eval_soft.py <dataset> <eval_dir>
+
+        <eval_dir> = directory for the current evaluation.
+        <dataset> = a subdirectory with the train, test and validation sets.
+        This is the output directory for path files.
+    """)
+
+    dataset_in = args['<dataset>']
+    resource = args['<eval_dir>']
 
     time = clock()
     np.random.seed(17)
-
-    dataset_in = sys.argv[1]
-    resource = sys.argv[2]
 
     for dataset in [dataset_in]:
         schema, train_path_sets, train_labels = load_data(resource + '/' + dataset + '/train')

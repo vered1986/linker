@@ -20,12 +20,14 @@ For instance:
 ```
 python search.py data/train_label /resource/wordnetMatrix.mm.tmp.npz /resource/wordnetEntities.txt /resource/wordnetProperties.txt /resource/wordnet-l2r.txt 1 True True data/nodes.txt data/train_path
 ```
+Use the -h or --help option for information.
 
 - Train the model (binary / weighted) with the following command:
 ```
-python -u eval_hard.py (eval_soft.py) [dataset] [eval_dir]
+python eval_hard.py (eval_soft.py) [dataset] [eval_dir]
 ``` 
 The eval_dir is the directory for the current evaluation. This directory should include a subdirectory called [dataset] that contains the train, test and validation sets. After evaluation, this directory will contain the path files, and the whitelists (in the binary model). This command evaluates the algorithm on this dataset using several Beta values and prints the performance results.
+Use the -h or --help option for information.
 
 ## Resources ##
 Due to space limitations, only the WordNet resource is available in the repository. 
@@ -38,6 +40,6 @@ In order to use the other resources:
 [left_object] [right_object] [property]
 ```
 
-- Use the script "create_resource.py" to create the resource files.
+- Use the script "create_resource.py" to create the resource files. Use the -h or --help option for information.
 
 Using large resources requires sufficient memory.

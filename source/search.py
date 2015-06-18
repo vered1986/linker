@@ -5,6 +5,7 @@ from logger import initialize_logger, log_info
 from relevant_nodes_finder import RelevantNodesFinder
 from knowledge_resource import KnowledgeResource
 from path_finder import PathFinder
+from docopt import docopt
 
 
 def main():
@@ -12,30 +13,40 @@ def main():
     Applies bi-directional search in two phases to find the shortest paths
     between every term-pair in the dataset: the first phase finds the nodes
     along the shortest paths, while the second reconstructs the paths themselves.
-
-    :param sys.argv[1] -- the dataset file
-    :param sys.argv[2] -- the resource adjacency matrix file
-    :param sys.argv[3] -- the entity str-id map file
-    :param sys.argv[4] -- the property str-id map file
-    :param sys.argv[5] -- the edges file
-    :param sys.argv[6] -- the maximum path length
-    :param sys.argv[7] -- whether reversed edges are allowed in this resource
-    :param sys.argv[8] -- whether to find the relevant nodes (or use the results file)
-    :param sys.argv[9] -- relevant nodes file (input / output)
-    :param sys.argv[10] -- the paths file (output)
     """
 
     # Get the arguments
-    dataset_file = sys.argv[1]
-    resource_mat_file = sys.argv[2]
-    entity_map_file = sys.argv[3]
-    property_map_file = sys.argv[4]
-    edges_file = sys.argv[5]
-    max_length = int(sys.argv[6])
-    allow_reversed_edges = sys.argv[7][0].upper() == 'T'
-    do_find_relevant_nodes = sys.argv[8][0].upper() == 'T'
-    relevant_nodes_file = sys.argv[9]
-    paths_file = sys.argv[10]
+    args = docopt("""Find the shortest paths between every term-pair in the dataset.
+
+    Usage:
+        search.py <dataset_path> <resource_matrix_path>
+        <resource_entities_path> <resource_properties_path>
+        <resource_l2r_path> <max_path_length>
+        <allow_reversed_edges> <find_relevant_nodes>
+        <relevant_nodes_file> <paths_out_file>
+
+        <dataset_path> = the dataset file
+        <resource_matrix_path> = the resource adjacency matrix file (.mm/.npz)
+        <resource_entities_path> = the entity str-id map file
+        <resource_properties_path> = the property str-id map file
+        <resource_l2r_path> = the edges file
+        <max_path_length> = the maximum path length
+        <allow_reversed_edges> = whether reversed edges are allowed in this resource
+        <find_relevant_nodes> = whether to find the relevant nodes (or use the results file)
+        <relevant_nodes_file> = relevant nodes file (input / output)
+        <paths_out_file> = the paths file (output)
+    """)
+
+    dataset_file = args['<dataset_path>']
+    resource_mat_file = args['<resource_matrix_path>']
+    entity_map_file = args['<resource_entities_path>']
+    property_map_file = args['<resource_properties_path>']
+    edges_file = args['<resource_l2r_path>']
+    max_length = int(args['<max_path_length>'])
+    allow_reversed_edges = args['<allow_reversed_edges>'][0].upper() == 'T'
+    do_find_relevant_nodes = args['<find_relevant_nodes>'][0].upper() == 'T'
+    relevant_nodes_file = args['<relevant_nodes_file>']
+    paths_file = args['<paths_out_file>']
 
     initialize_logger()
 
