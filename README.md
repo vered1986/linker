@@ -18,7 +18,7 @@ python search.py [dataset_path] [resource_matrix_path] [resource_entities_path] 
 ``` 
 For instance:
 ```
-python search.py data/train_label /resource/wordnetMatrix.mm.tmp.npz /resource/wordnetEntities.txt /resource/wordnetProperties.txt /resource/wordnet-l2r.txt 1 True True data/nodes.txt data/train_path
+python search.py data/train_label /resource/wordnetMatrix.mm.tmp.npz /resource/wordnetEntities.txt /resource/wordnetProperties.txt /resource/wordnet-l2r.txt 8 True True data/nodes.txt data/train_path
 ```
 Use the -h or --help option for information.
 
