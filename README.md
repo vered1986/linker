@@ -30,8 +30,8 @@ The eval_dir is the directory for the current evaluation. This directory should 
 Use the -h or --help option for information.
 
 ## Resources ##
-Due to space limitations, only the WordNet resource is available in the repository. 
-In order to use the other resources: 
+Due to space limitations, only the WordNet resource is available in the repository. You can get the other resource files in [here](https://drive.google.com/folderview?id=0B0kBcFEBhcbhXzhJY1c4Z2pFSHM&usp=sharing).
+In order to use the other resources, or an updated version of the resources we used: 
 
 - Download the resource dump files. We used [Wikidata](http://tools.wmflabs.org/wikidata-exports/rdf/), [DBPedia](http://wiki.dbpedia.org/Downloads) and [Yago](https://www.mpi-inf.mpg.de/departments/databases-and-information-systems/research/yago-naga/yago/downloads/), but you can use any other structured resource.
 
