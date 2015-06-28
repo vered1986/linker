@@ -4,7 +4,7 @@ import sys
 import numpy as np
 
 from aprf import calc_aprf
-from hard_path_validator import HardPathValidator
+from hard_path_validator import HardPathValidator, HardPathValidatorWhitelist
 from common_data import load_data, load_whitelist
 from docopt import docopt
 
@@ -18,15 +18,17 @@ def main():
     args = docopt("""Trains and evaluates the binary model using several Beta values and prints the performance results.
 
     Usage:
-        eval_hard.py <dataset> <eval_dir>
+        eval_hard.py <dataset> <eval_dir> [<whitelist>]
 
         <eval_dir> = directory for the current evaluation.
         <dataset> = a subdirectory with the train, test and validation sets.
         This is the output directory for path and whitelist files.
+        <whitelist> = the whitelist file, in case of using a predefined whitelist.
     """)
 
     dataset_in = args['<dataset>']
     resource = args['<eval_dir>']
+    whitelist = args['<whitelist>']
 
     time = clock()
     np.random.seed(17)
@@ -34,10 +36,10 @@ def main():
     for dataset in [dataset_in]:
 
         # Load a whitelist from a file
-        if len(sys.argv) > 3:
+        if whitelist is not None:
             schema, test_path_sets, test_labels = load_data(resource + '/' + dataset + '/test')
             whitelist = load_whitelist(sys.argv[3], schema)
-            validator = HardPathValidator(whitelist)
+            validator = HardPathValidatorWhitelist(whitelist)
 
             # Evaluate on the test set
             predictions = validator.classify(test_path_sets)
