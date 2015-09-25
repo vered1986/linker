@@ -119,10 +119,11 @@ def load_map(map_file, relevant_nodes):
     return str_to_id, id_to_str
 
 
-def load_edges(relations_file, relevant_nodes):
+def load_edges(relations_file, relevant_nodes, relevant_properties=None):
     """Loads the left-to-right and right-to-left edges from a file
     :param relations_file -- the left-to-right edges file
     :param relevant_nodes -- the nodes to load from this resource
+    :param relevant_properties -- the properties to load from this resource
     """
     l2r_edges = {}
     r2l_edges = {}
@@ -138,15 +139,68 @@ def load_edges(relations_file, relevant_nodes):
                     
                 if y not in l2r_edges[x]:
                     l2r_edges[x][y] = set()
-                
-                l2r_edges[x][y].add(prop)
+
+                if (relevant_properties is None) or (prop in relevant_properties):
+                    l2r_edges[x][y].add(prop)
                 
                 if y not in r2l_edges:
                     r2l_edges[y] = {}      
                     
                 if x not in r2l_edges[y]:
                     r2l_edges[y][x] = set()
-                    
-                r2l_edges[y][x].add(prop)
+
+                if (relevant_properties is None) or (prop in relevant_properties):
+                    r2l_edges[y][x].add(prop)
 
     return l2r_edges, r2l_edges
+
+
+class PartialKnowledgeResource(KnowledgeResource):
+
+    def __init__(self, resource_mat_file, entity_map_file, property_map_file, \
+                 relations_file, whitelist):
+        """
+        Load the resource with the restricted set of edge types according to the whitelist
+        :param whitelist: The list of allowed edge types
+        """
+
+        # Load the properties
+        prop_to_id, id_to_prop = load_map(property_map_file, None)
+
+        # Filter according to the whitelist
+        properties_in_whitelist = set([clean(prop) for prop in whitelist])
+        id_to_prop = dict([(prop_to_id[prop], prop) for prop in prop_to_id.keys() if prop in properties_in_whitelist])
+        prop_to_id = dict([(prop, prop_to_id[prop]) for prop in prop_to_id.keys() if prop in properties_in_whitelist])
+
+        self.prop_to_id, self.id_to_prop = prop_to_id, id_to_prop
+
+        edge_types = [edge_type.replace('$', '').replace('^', '') for edge_type in whitelist]
+        self.allow_reversed_edges = len([prop for prop in self.prop_to_id.keys() if '<-' + prop + '-' in edge_types]) > 0
+
+        # Load the edges for the specific properties
+        self.l2r_edges, self.r2l_edges = load_edges(relations_file, None, prop_to_id.values())
+
+        # Load the entities
+        self.term_to_id, self.id_to_term = load_map(entity_map_file, None)
+
+        # Load the restricted matrix
+        m = dok_matrix((len(self.term_to_id), len(self.term_to_id)), dtype=np.int16)
+        for x in self.l2r_edges.keys():
+            for y in self.l2r_edges[x].keys():
+                m[x, y] = 1
+        self.adjacency_matrix = m.tocsr()
+
+        if self.allow_reversed_edges:
+            self.adjacency_matrix = self.adjacency_matrix + self.adjacency_matrix.T
+
+
+def clean(edge):
+    """Returns the property name of an edge"""
+    edge = edge.replace('$', '').replace('^', '')
+
+    if '->' in edge:
+        edge = edge[1:-2]
+    else:
+        edge = edge[2:-1]
+
+    return edge
