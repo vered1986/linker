@@ -31,6 +31,22 @@ def main():
     whitelist_path = args['<whitelist_path>']
     output_dir = args['<output_dir>']
     max_length = int(args['<max_length>'])
+    resource_path_list = args['<resource_prefix>']
+
+    infer(dataset_file, max_length, output_dir, resource_path_list, whitelist_path)
+
+
+def infer(dataset_file, max_length, output_dir, resource_path_list, whitelist_path):
+    """
+    Receives a list of knowledge resources (each represented by a directory containing all
+    the resource files), a dataset of unlabeled term-pairs, and the pre-trained whitelist.
+    Returns the prediction for every term pair.
+    :param dataset_file - The path of the dataset file with the term-pairs
+    :param max_length - Maximum path length
+    :param output_dir - Output directory for the predictions file
+    :param resource_path_list - A list of resources directories
+    :param whitelist_path - The path of the pre-trained whitelist
+    """
 
     # Load the dataset
     dataset = load_dataset(dataset_file)
@@ -42,16 +58,14 @@ def main():
     resources = []
     node_finders = []
     path_finders = []
-
-    for dir in args['<resource_prefix>']:
-
+    for dir in resource_path_list:
         resource = PartialKnowledgeResource(dir + 'Matrix.mm.tmp.npz', dir + 'Entities.txt',
                                             dir + 'Properties.txt', dir + '-l2r.txt', whitelist)
         resources.append(resource)
         adjacency_matrix = resource.adjacency_matrix
         node_finders.append(RelevantNodesFinder(adjacency_matrix))
         path_finders.append(PathFinder(resource))
-
+        
     with codecs.open(output_dir + '/predictions.txt', 'w', 'utf-8') as f_out:
 
         # For each term-pair, find relevant nodes and then find paths
