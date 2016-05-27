@@ -40,7 +40,7 @@ def load_pairs(paths_file, data_labels, orig_schema=None):
     labels = []
     pair_pattern = re.compile('pair number [0-9]+: (.+)->(.+)')
 
-    with open(paths_file) as f:
+    with codecs.open(paths_file, 'r', 'utf-8') as f:
         for line in f:
             match = pair_pattern.search(line.strip())
 
@@ -90,7 +90,9 @@ def vectorize_paths(path_sets, orig_schema=None):
 
     # Create the schema according to the edge types in the training set
     if orig_schema is None:
-        schema = sorted(set.union(*[set(path.keys()) for path_set in path_sets for path in path_set]))
+        schema = set.union(*[set(path.keys()) for path_set in path_sets for path in path_set])
+        schema.add('$')
+        schema = sorted(schema)
     else:
         schema = orig_schema
 
@@ -132,5 +134,11 @@ def load_whitelist(file_path, schema):
             edge_type = line.strip()
             if edge_type in schema:
                 whitelist[schema.index(edge_type)] = 1
+
+    # Add the empty path, to classify identical pairs as positive
+    if '$' in schema:
+        whitelist[schema.index('$')] = 1
+    else:
+        print 'warning: identity edge type is not in the whitelist'
 
     return whitelist

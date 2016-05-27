@@ -65,7 +65,7 @@ def infer(dataset_file, max_length, output_dir, resource_path_list, whitelist_pa
         adjacency_matrix = resource.adjacency_matrix
         node_finders.append(RelevantNodesFinder(adjacency_matrix))
         path_finders.append(PathFinder(resource))
-        
+
     with codecs.open(output_dir + '/predictions.txt', 'w', 'utf-8') as f_out:
 
         # For each term-pair, find relevant nodes and then find paths
@@ -136,9 +136,9 @@ def load_whitelist(file_path):
     :param file_path The whitelist's file
     """
     with open(file_path) as in_file:
-        whitelist = [line.strip() for line in in_file]
+        whitelist = set(['$'] + [line.strip() for line in in_file])
 
-    return set(whitelist)
+    return whitelist
 
 
 if __name__ == '__main__':

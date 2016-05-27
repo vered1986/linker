@@ -10,7 +10,8 @@ class HardPathValidator:
     and classifies a term-pair as positive if at least one of its paths is indicative.
     """
 
-    def __init__(self, f_beta_sq=None, regularization=1.0, num_epochs=100, population_ratio=1.0, p_mutation=0.1):
+    def __init__(self, f_beta_sq=None, regularization=1.0, num_epochs=100, population_ratio=1.0, p_mutation=0.1,
+                 identity_index=None):
         """
         Initialize the binary edge model.
         :param f_beta_sq: the beta parameter for F_beta^2 measure
@@ -24,6 +25,7 @@ class HardPathValidator:
         self.num_epochs = num_epochs
         self.population_ratio = population_ratio
         self.p_mutation = p_mutation
+        self.identity_index = identity_index
 
     def learn(self, path_sets, labels):
         """Train the binary edge model
@@ -40,6 +42,7 @@ class HardPathValidator:
         population = int(num_features * self.population_ratio)
         p_mutation_init = self.p_mutation
         p_mutation = p_mutation_init
+        identity_index = self.identity_index
 
         # Create the initial population randomly
         white_lists = np.random.choice(2, size=(population, num_features))
@@ -65,6 +68,10 @@ class HardPathValidator:
             # Create a mutation with probability p_mutation
             mutations = np.random.choice(2, size=(population, num_features), p=[1.0 - p_mutation, p_mutation])
             white_lists = np.abs(white_lists - mutations)
+
+            # Force the whitelist to classify identical pairs as equal
+            if identity_index is not None:
+                white_lists[:, identity_index] = 1
 
             # Reduce the mutation probability
             p_mutation = p_mutation_init * (1.0 - (float(epoch) / num_epochs))

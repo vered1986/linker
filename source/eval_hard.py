@@ -58,9 +58,13 @@ def main():
         val_path_sets = map(np.sign, val_path_sets)
         test_path_sets = map(np.sign, test_path_sets)
 
+        identity_index = None
+        if '$' in schema:
+            identity_index = schema.index('$')
+
         for f_beta_sq in [0.00001] + [0.01*i for i in xrange(5, 200, 5)]:
             validators = [HardPathValidator(f_beta_sq=f_beta_sq, regularization=regularization, num_epochs=100,
-                                            population_ratio=10.0, p_mutation=0.01)
+                                            population_ratio=10.0, p_mutation=0.01, identity_index=identity_index)
                           for regularization in [0.01, 0.1, 1.0]]
 
             # Train the model
@@ -75,9 +79,9 @@ def main():
 
             # Save the whitelist to a file
             with open(resource + '/' + dataset + '/whitelist' + str(f_beta_sq), 'w') as out:
-                for edge_type in range(len(validator.white_list)):
-                    if validator.white_list[edge_type] == 1:
-                        out.write(schema[edge_type] + '\n')
+                out.write('\n'.join([schema[edge_type]
+                                     for edge_type in range(len(validator.white_list))
+                                     if validator.white_list[edge_type] == 1]))
 
             print "%0.2f" % ((clock() - time) / 60),
             print dataset, 'Hard', f_beta_sq,
